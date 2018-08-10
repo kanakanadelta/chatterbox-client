@@ -5,7 +5,7 @@ var app = {
 app.server = 'http://parse.LA.hackreactor.com/chatterbox/classes/messages';
 
 app.init = function() {
-
+    
 };
 
 app.send = function() {
@@ -44,17 +44,35 @@ app.fetch = function() {
 }
 
 app.clearMessages = function() {
-    $('#chats').children().remove()
+    $('#chats').children().remove();
 }
 
 app.renderMessage = function(message) {
-    $('#chats').children().append(message)
+    $('#chats').html('<div>' + $(message) + '</div>');  
 }
+
+app.renderRoom = function(room) {
+    $('#roomSelect').append('<div>' + $(room) + '</div>');
+}
+
+app.handleUsernameClick = function() {
+    console.log('hi')
+    friends.push($(message.username));
+}
+
+$('.username').on('click',function() {
+    app.handleUsernameClick()
+});
+
+
+//////Dynamic Variables//////
 
 var message = {
     username: 'Mel Brooks',
     text: 'It\'s good to be the king',
     roomname: 'lobby'
-  };
+};
 
-var stringifyMsg = JSON.stringify(message);
+var friends = [];
+
+////End Dynamic Variables////

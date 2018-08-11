@@ -27,6 +27,7 @@ app.init = function() {
     //retrieve messages from server
     app.fetch();
     
+    ////////MESSAGES////////////
     //blockCode for message input
     //event listener for click
     $('input').click(function() {
@@ -52,6 +53,11 @@ app.init = function() {
             app.send(msg);
         }
     });
+
+    ///////BEFRIENDING///////////
+    $('#userFriend').click(function(){
+        alert('hah!');
+    })
 
 };
 
@@ -168,7 +174,7 @@ app.renderMessage = function(data) {
     for(var i = 0; i < data.length; i++){
         var x = data[i]
         //console.log('rendermsg', x)
-        $('#chats').append(`<div id="${x.roomname}"> ${x.username} : ${x.text} </div>`);
+        $('#chats').append(`<div id="${x.roomname}"> <a href="#" id="userFriend">${x.username}</a> : ${x.text} </div>`);
     }
 }
 

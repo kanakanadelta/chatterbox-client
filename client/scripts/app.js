@@ -1,5 +1,4 @@
-
-
+// YOUR CODE HERE:
 var app = {
 
     //////Dynamic Variables//////
@@ -13,45 +12,54 @@ var app = {
 //////DOM Main Elements//////
 
 var $body = $('body');
-// $body.html('');
-var $title = $('<h1>CHATTERBAWKS</h1>');
-$title.appendTo('body');
+// // $body.html('');
+// var $title = $('<h1>CHATTERBAWKS</h1>');
+// $title.appendTo('body');
 // var $messageBody
 
 ///End Dom Main Elements////
 
 app.server = 'http://parse.la.hackreactor.com/chatterbox/classes/messages';
 
+//////INIT///////
+
 app.init = function() {
-    
     app.fetch();
+    console.log()
+    // app.renderMessage();
 };
+
+/////INIT///////
+
+
 
 app.send = function(message) {
     $.ajax({
-        // This is the url you should use to communicate with the parse API server.
-        url: 'http://parse.la.hackreactor.com/chatterbox/classes/messages',
-        type: 'POST',
-        data: JSON.stringify(message),
-        contentType: 'application/json',
-        success: function (data) {
-          console.log('chatterbox: Message sent');
-        },
-        error: function (data) {
-          // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-          console.error('chatterbox: Failed to send message', data);
-        }
-      });
+  // This is the url you should use to communicate with the parse API server.
+  url: 'http://parse.CAMPUS.hackreactor.com/chatterbox/classes/messages',
+  type: 'POST',
+  data: JSON.stringify(message),
+  contentType: 'application/json',
+  success: function (data) {
+    console.log('chatterbox: Message sent');
+  },
+  error: function (data) {
+    // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+    console.error('chatterbox: Failed to send message', data);
+  }
+});
 }
 
 
 app.fetch = function() {
     $.ajax({
         // This is the url you should use to communicate with the parse API server.
+        //use an AJAX verb to retrieve the latest data;
         type: 'GET',
         url: 'http://parse.la.hackreactor.com/chatterbox/classes/messages',
         success: function (data) {
-          console.log('chatterbox: Message sent');
+          console.log('chatterbox: Message sent', data);
+          app.renderMessage(data)
         },
         error: function (data) {
           // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -64,14 +72,16 @@ app.clearMessages = function() {
     $('#chats').children().remove();
 }
 
-app.renderMessage = function() {
-    $username = $('<div class="message"><a href="#"></a><div>');
-    $text = $('<div class="message"><p></p></div>');
-    $roomName = $('<div class="message"><p></p></div>');
-
+app.renderMessage = function(data) {
+    
+    console.log(data.results[0].username)
+    data.results.forEach(function(message) {
+        $('#chats').append(`<div> ${message.username}: ${message.text} </div>`);
+    })
     // $('#chats').append('<div>' + $(this.message) + '</div>');  
-    $chat = $('#chats').append('<div>' + $(message) + '</div>'); 
-    $chat.appendTo('#main')
+    //$chat = $('#chats').append('...'); 
+    // console.log(app.fetch()[0])
+
 }
 
 app.renderRoom = function(room) {
@@ -85,4 +95,3 @@ app.handleUsernameClick = function() {
 }
 
 app.init();
-

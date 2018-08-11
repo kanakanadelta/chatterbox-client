@@ -35,6 +35,7 @@ app.init = function() {
         //slice to get only the username string from the previous value
         var username = window.location.search.slice(user.indexOf('=') + 1, user.length);
         //jQuery to prepend our new message to the chatbox
+        var roomValue = document.getElementById("roomNameSelector").value;
 
         if (document.getElementById("text").value.slice(0, 8) !== '<script>') {
             $('#chats').prepend(`<div> ${username} : ${document.getElementById("text").value} </div>`);
@@ -45,7 +46,7 @@ app.init = function() {
             var msg= { 
                 username: username,
                 text: document.getElementById("text").value,
-                roomname: 'The Room'
+                roomname: roomValue
             }
             //method invocation to send message data to server
             app.send(msg);
@@ -112,8 +113,20 @@ app.fetch = function() {
                     })
                 }
                 console.log('filtered data', dataResults)
+                $('#chats').each(function(chits) {
+                    console.log('this ischits?',this)
+                    // this.each(function() {
+                    //     if (!document.getElementById("roomValue")) {
+                    //         console.log('chits', this)
+                    //         this.remove();
+                    //     }
+                    // });
+                    // console.log($("#chats").getElementById("roomValue"))
+                })
                 $('#chats').remove()
+                $('body').append('<div id="chats"></div>');
                 app.renderMessage(dataResults);
+
             })
             app.renderMessage(dataResults)
             console.log('changed', roomValue)
@@ -155,7 +168,7 @@ app.renderMessage = function(data) {
     for(var i = 0; i < data.length; i++){
         var x = data[i]
         //console.log('rendermsg', x)
-        $('#chats').append(`<div> ${x.username} : ${x.text} </div>`);
+        $('#chats').append(`<div id="${x.roomname}"> ${x.username} : ${x.text} </div>`);
     }
 }
 

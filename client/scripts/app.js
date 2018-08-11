@@ -54,7 +54,7 @@ app.send = function(message) {
 app.fetch = function() {
     $.ajax({
         // This is the url you should use to communicate with the parse API server.
-        
+
         //replace type use an AJAX verb to retrieve the latest data;
         type: 'GET',
         url: 'http://parse.la.hackreactor.com/chatterbox/classes/messages',
@@ -76,15 +76,7 @@ app.clearMessages = function() {
 }
 
 app.renderMessage = function(data) {
-    
-    console.log(data.results[0].username)
-    // data.results.forEach(function(message) {
-    //     $('#chats').append(`<div> ${message.username}: ${message.text} </div>`);
-    // })
-    // $('#chats').append('<div>' + $(this.message) + '</div>');  
-    //$chat = $('#chats').append('...'); 
-    // console.log(app.fetch()[0])
-    console.log(data.results.length)
+
     for(var i = data.results.length - 1; i > 0; i--){
         var x = data.results[i]
         $('#chats').append(`<div> ${x.username} : ${x.text} </div>`);
@@ -94,11 +86,18 @@ app.renderMessage = function(data) {
 app.renderRoom = function(room) {
     // $('#roomSelect').append('<div>' + $(room) + '</div>');
     $('#roomSelect').append('<div id="#roomSelect"><div>');
-}   
+}
 
 app.handleUsernameClick = function() {
     console.log('hi')
     this.friends.push($(this.message.username));
 }
 
-app.init();
+$( document ).ready(function() {
+  app.init();
+  var textInput = JSON.stringify(document.getElementById("text").value);
+  $('input').click(function() {
+    console.log(textInput)
+    $('#chats').append(`<div> doge : ${textInput} </div>`)
+  });
+});

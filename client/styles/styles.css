@@ -88,3 +88,13 @@ form input[type=text] {
     background-color: #0090da;
 }
 
+#roomDiv {
+    display: inline-block;
+}
+
+#sendMessageButton {
+    background-color: grey;
+    border-radius: 10%;
+    color: black;
+    text-shadow: darkgrey;
+}

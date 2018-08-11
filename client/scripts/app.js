@@ -1,17 +1,36 @@
+
+
 var app = {
+
+    //////Dynamic Variables//////
+
+     friends : [],
+
+    ////End Dynamic Variables////
 
 };
 
-app.server = 'http://parse.LA.hackreactor.com/chatterbox/classes/messages';
+//////DOM Main Elements//////
+
+var $body = $('body');
+// $body.html('');
+var $title = $('<h1>CHATTERBAWKS</h1>');
+$title.appendTo('body');
+// var $messageBody
+
+///End Dom Main Elements////
+
+app.server = 'http://parse.la.hackreactor.com/chatterbox/classes/messages';
 
 app.init = function() {
     
+    app.fetch();
 };
 
-app.send = function() {
+app.send = function(message) {
     $.ajax({
         // This is the url you should use to communicate with the parse API server.
-        url: 'http://parse.LA.hackreactor.com/chatterbox/classes/messages',
+        url: 'http://parse.la.hackreactor.com/chatterbox/classes/messages',
         type: 'POST',
         data: JSON.stringify(message),
         contentType: 'application/json',
@@ -29,10 +48,8 @@ app.send = function() {
 app.fetch = function() {
     $.ajax({
         // This is the url you should use to communicate with the parse API server.
-        url: 'http://parse.LA.hackreactor.com/chatterbox/classes/messages',
         type: 'GET',
-        data: JSON.stringify(message),
-        contentType: 'application/json',
+        url: 'http://parse.la.hackreactor.com/chatterbox/classes/messages',
         success: function (data) {
           console.log('chatterbox: Message sent');
         },
@@ -47,32 +64,25 @@ app.clearMessages = function() {
     $('#chats').children().remove();
 }
 
-app.renderMessage = function(message) {
-    $('#chats').html('<div>' + $(message) + '</div>');  
+app.renderMessage = function() {
+    $username = $('<div class="message"><a href="#"></a><div>');
+    $text = $('<div class="message"><p></p></div>');
+    $roomName = $('<div class="message"><p></p></div>');
+
+    // $('#chats').append('<div>' + $(this.message) + '</div>');  
+    $chat = $('#chats').append('<div>' + $(message) + '</div>'); 
+    $chat.appendTo('#main')
 }
 
 app.renderRoom = function(room) {
-    $('#roomSelect').append('<div>' + $(room) + '</div>');
-}
+    // $('#roomSelect').append('<div>' + $(room) + '</div>');
+    $('#roomSelect').append('<div id="#roomSelect"><div>');
+}   
 
 app.handleUsernameClick = function() {
     console.log('hi')
-    friends.push($(message.username));
+    this.friends.push($(this.message.username));
 }
 
-$('.username').on('click',function() {
-    app.handleUsernameClick()
-});
+app.init();
 
-
-//////Dynamic Variables//////
-
-var message = {
-    username: 'Mel Brooks',
-    text: 'It\'s good to be the king',
-    roomname: 'lobby'
-};
-
-var friends = [];
-
-////End Dynamic Variables////

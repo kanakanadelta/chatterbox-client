@@ -98,3 +98,18 @@ form input[type=text] {
     color: black;
     text-shadow: darkgrey;
 }
+
+#chats, #div {
+    border: 1px;
+    color: rgb(39, 31, 31);
+    box-shadow: grey;
+}
+
+#main {
+    background-color: rgb(59, 151, 236);
+
+}
+#main, h1 {
+    color: white;
+    text-shadow: 10px #00aeff;;
+}

@@ -24,40 +24,37 @@ app.server = 'http://parse.la.hackreactor.com/chatterbox/classes/messages';
 //////INIT///////
 
 app.init = function() {
+    //retrieve messages from server
     app.fetch();
-    console.log()
-    // app.renderMessage();
-    var textInput = document.getElementById("text").value;
+    
+    //blockCode for message input
+    //event listener for click
     $('input').click(function() {
+        //retrieve username from search function box within html script
         var user = window.location.search;
+        //slice to get only the username string from the previous value
         var username = window.location.search.slice(user.indexOf('=') + 1, user.length);
-        var $user = username;
-        console.log(textInput)
-        $('#chats').prepend(`<div> ${$user} : ${document.getElementById("text").value} </div>`);
-        console.log('what',document.getElementById("text").value)
+        //jQuery to prepend our new message to the chatbox
 
-    var msg= {
-        username: username,
-        text: document.getElementById("text").value,
-        roomname: 'WaifuCity'
-    }
-    app.send(msg);
+        if (document.getElementById("text").value.slice(0, 8) !== '<script>') {
+            $('#chats').prepend(`<div> ${username} : ${document.getElementById("text").value} </div>`);
+            
+            console.log('what',document.getElementById("text").value)
+
+            //object literal to store message and its data to send
+            var msg= { 
+                username: username,
+                text: document.getElementById("text").value,
+                roomname: 'The Room'
+            }
+            //method invocation to send message data to server
+            app.send(msg);
+        }
     });
 
-    // var user = window.location.search;
-    // var username = window.location.search.slice(user.indexOf('=') + 1, user.length);
-    // var $user = username;
-    // console.log('what',document.getElementById("text").value)
-
-    // var msg= {
-    //     username: username,
-    //     text: document.getElementById("text").value,
-    //     roomname: 'WaifuCity'
-    // }
-    // app.send(msg);
 };
 
-/////INIT///////
+/////END OF INIT///////
 
 
 
@@ -88,10 +85,59 @@ app.fetch = function() {
         type: 'GET',
         url: 'http://parse.la.hackreactor.com/chatterbox/classes/messages',
         contentType : 'application/json',
+
+        //retrieve latest data from server:
         data: "order=-createdAt",
+
         success: function (data) {
-          console.log('chatterbox: Message sent', data);
-          app.renderMessage(data)
+            //start of success method
+                //log of latest messages received
+            console.log('chatterbox: Message sent', data);
+
+            //FETCH.AJAX// ROOM //
+            //if selector is at current room selected
+            var roomValue = document.getElementById("roomNameSelector").value;
+            
+            var dataResults = data.results;
+            $('#roomNameSelector').change(function() {
+                roomValue = document.getElementById("roomNameSelector").value;
+                console.log( "Handler for .change() called." )
+                console.log('room', roomValue)
+                if (roomValue) {
+                    dataResults = dataResults.filter(function(eachRoom) {
+                        console.log(eachRoom.roomname === roomValue)
+                        if(eachRoom.roomname === roomValue){
+                            return eachRoom;
+                        }
+                    })
+                }
+                console.log('filtered data', dataResults)
+                $('#chats').remove()
+                app.renderMessage(dataResults);
+            })
+            app.renderMessage(dataResults)
+            console.log('changed', roomValue)
+            //   //
+            
+            
+            // app.renderMessage(dataResults)
+            //   //
+            console.log(data.results[1].roomname)
+            var storage = [];
+            
+            data.results.forEach(function(message, i) {
+                if (data.results[i].roomname) {
+                    if (!storage.includes(data.results[i].roomname)) {
+                        storage.push(data.results[i].roomname);
+                        $('#roomNameSelector').prepend(`<option value='${data.results[i].roomname}'> ${data.results[i].roomname} </option>`);
+                    }   
+                }
+            });
+
+            console.log(storage)
+            //FETCH.AJAX// ROOM //
+
+            //end of fetch.success method
         },
         error: function (data) {
           // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -106,8 +152,8 @@ app.clearMessages = function() {
 
 app.renderMessage = function(data) {
 
-    for(var i = 0; i < data.results.length; i++){
-        var x = data.results[i]
+    for(var i = 0; i < data.length; i++){
+        var x = data[i]
         //console.log('rendermsg', x)
         $('#chats').append(`<div> ${x.username} : ${x.text} </div>`);
     }
@@ -125,7 +171,5 @@ app.handleUsernameClick = function() {
 
 $( document ).ready(function() {
   app.init();
-  setTimeout(function(){
-    window.location.reload();
- }, 5000);
 });
+

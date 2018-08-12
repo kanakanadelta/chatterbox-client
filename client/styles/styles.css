@@ -107,9 +107,11 @@ form input[type=text] {
 
 #main {
     background-color: rgb(59, 151, 236);
+    margin: auto;
 
 }
 #main, h1 {
     color: white;
-    text-shadow: 10px #00aeff;;
+    text-shadow: 10px #00aeff;
+    align-content: center;
 }

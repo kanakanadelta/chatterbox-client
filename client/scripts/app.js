@@ -3,10 +3,11 @@ var app = {
 
     //////Dynamic Variables//////
 
-     friends : [],
+    users : [],
+    friends : [],
 
     ////End Dynamic Variables////
-
+    
 };
 
 //////DOM Main Elements//////
@@ -38,7 +39,7 @@ app.init = function() {
         //jQuery to prepend our new message to the chatbox
         var roomValue = document.getElementById("roomNameSelector").value;
 
-        if (document.getElementById("text").value.slice(0, 8) !== '<script>') {
+        // if (document.getElementById("text").value.slice(0, 8) !== '<script>') {
             $('#chats').prepend(`<div> ${username} : ${document.getElementById("text").value} </div>`);
             
             console.log('what',document.getElementById("text").value)
@@ -51,13 +52,13 @@ app.init = function() {
             }
             //method invocation to send message data to server
             app.send(msg);
-        }
+        // }
     });
 
-    ///////BEFRIENDING///////////
-    $('#userFriend').click(function(){
-        alert('hah!');
-    })
+    // ///////BEFRIENDING///////////
+    // $('#userFriend').on('click',function(){
+    //     alert('hah!');
+    // })
 
 };
 
@@ -174,8 +175,16 @@ app.renderMessage = function(data) {
     for(var i = 0; i < data.length; i++){
         var x = data[i]
         //console.log('rendermsg', x)
-        $('#chats').append(`<div id="${x.roomname}"> <a href="#" id="userFriend">${x.username}</a> : ${x.text} </div>`);
+        $('#chats').append(`<div id="${x.roomname}"> <a href="#" class="userFriend" id="${x.username}" >${x.username}</a> : ${x.text} </div>`);
+        app.users.push(x.username)
     }
+    $('.userFriend').on('click',function(){
+        var $this = this;
+        console.log(this)
+        console.log('user name', this.getAttribute('id'))
+        var name = this.getAttribute('id');
+        app.friends.push(name);
+    })
 }
 
 app.renderRoom = function(room) {
@@ -185,7 +194,10 @@ app.renderRoom = function(room) {
 
 app.handleUsernameClick = function() {
     console.log('hi')
-    this.friends.push($(this.message.username));
+
+    let $this = $(this)
+    app.friends.push($this);
+    
 }
 
 $( document ).ready(function() {
